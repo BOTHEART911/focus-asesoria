@@ -181,7 +181,11 @@
     if (!whatsapp) {
       errores.push("N° Telefónico es obligatorio");
     } else if (isNaN(whatsapp) || whatsapp.length !== 10) {
-      errores.push("Whatsapp debe tener 10 dígitos numéricos");
+      errores.push("N° Telefónico debe tener 10 dígitos numéricos");
+    }
+
+    if (!horaContacto) {
+      errores.push("La hora es obligatorio");
     }
 
     if (errores.length > 0) {
