@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Contacto</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-image: url('https://res.cloudinary.com/dmnvbmul2/image/upload/v1726760493/FOCUS_Slide_rqvdhe.png'); /* Imagen de fondo */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(0, 0, 0, 0.7); /* Fondo transparente */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px 2px #00f; /* Mantener el sombreado azul */
+    }
+    .form-title {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #fff; /* Aquí puedes cambiar el color de las descripciones */
+    }
+    .form-group input[type="text"],
+    .form-group input[type="tel"],
+    .form-group input[type="time"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .form-group input[type="submit"] {
+      background-color: #00f;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+    .form-group input[type="submit"]:hover {
+      background-color: #005;
+    }
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+      overflow: hidden;
+      background: #000;
+      margin-top: 20px;
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .copyright {
+      text-align: center;
+      margin-top: 20px;
+      color: #fff;
+    }
+    .copyright a {
+      color: #00f;
+      text-decoration: none;
+    }
+    .copyright a:hover {
+      text-decoration: underline;
+    }
+
+    /* Agregar la regla aquí para cambiar el color de <small> */
+    small {
+      color: #00f; /* Cambia este valor por el color que prefieras */
+    }
+    /* Clase global para cambiar el color de los textos */
+    .text-color {
+      color: #fff; /* Cambia el color aquí */
+    }
+  </style>
+</head>
+<body>
+  <div class="container text-color"> <!-- Aplicar la clase aquí -->
+    <div class="form-title">Asesoría FOCUS</div>
+
+    <!-- Contenedor del video -->
+    <div class="video-container">
+      <iframe id="videoPreview" allowfullscreen></iframe>
+    </div>
+
+    <!-- Descripción del video -->
+    <p>Estamos para orientarte en el proceso</p>
+
+    <!-- Inputs del usuario -->
+    <div class="form-group">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre" required>
+    </div>
+
+    <div class="form-group">
+      <label for="whatsapp">N° Telefónico:</label>
+      <input type="tel" id="whatsapp" name="whatsapp" placeholder="Escribe tu número Telefónico" required>
+    </div>
+
+    <div class="form-group">
+      <label for="horaContacto">Te contactamos:</label>
+      <input type="time" id="horaContacto" name="horaContacto">
+      <small>Opcionalmente, selecciona la hora en la que podemos llamarte</small>
+    </div>
+
+    <div class="form-group">
+      <input type="submit" value="Enviar Respuesta" onclick="validarFormulario()">
+    </div>
+
+    <div class="error-message"></div>
+
+    <div class="copyright">
+      <p>Copyright © <a href="https://wa.me/573103230712" target="_blank">Oscar Polania</a></p>
+    </div>
+  </div>
+
+  <script>
+  // Función para obtener el ID del video ya sea en formato estándar o short
+  function obtenerIdVideo(url) {
+    let videoId = null;
+    if (url.includes('youtu.be')) {
+      videoId = url.split('/').pop().split('?')[0];
+    } else if (url.includes('youtube.com/shorts')) {
+      videoId = url.split('/').pop().split('?')[0];
+    } else if (url.includes('youtube.com/watch')) {
+      const urlParams = new URLSearchParams(url.split('?')[1]);
+      videoId = urlParams.get('v');
+    }
+    return videoId;
+  }
+
+  // Previsualizar video basado en URL
+  function previsualizarVideo() {
+    const url = "https://youtu.be/lmDfmilZ4Xo?si=bw78mXqkivgHQpRx"; // Cambia la URL si lo deseas
+    const videoId = obtenerIdVideo(url);
+    if (videoId) {
+      const iframe = document.getElementById('videoPreview');
+      iframe.src = `https://www.youtube.com/embed/${videoId}`;
+    }
+  }
+
+  previsualizarVideo();
+
+  function validarFormulario() {
+    var nombre = document.getElementById('nombre').value;
+    var whatsapp = document.getElementById('whatsapp').value;
+
+    var errores = [];
+
+    if (!nombre) {
+      errores.push("Nombre es obligatorio");
+    }
+    if (!whatsapp) {
+      errores.push("N° Telefónico es obligatorio");
+    } else if (isNaN(whatsapp) || whatsapp.length !== 10) {
+      errores.push("Whatsapp debe tener 10 dígitos numéricos");
+    }
+
+    if (errores.length > 0) {
+      var mensajeError = errores.join("<br>");
+      document.querySelector('.error-message').innerHTML = mensajeError;
+    } else {
+      enviarDatos();
+    }
+  }
+
+  function enviarDatos() {
+    var nombre = document.getElementById('nombre').value;
+    var whatsapp = document.getElementById('whatsapp').value;
+    var horaContacto = document.getElementById('horaContacto').value;
+
+    var mensaje = "*SOLICITUD DE ASESORÍA*\n\n";
+    mensaje += "*Nombre:* " + nombre + "\n";
+    mensaje += "*N° Telefónico:* " + whatsapp + "\n";
+    if (horaContacto) {
+      mensaje += "*Te Contactamos:* " + horaContacto + "\n";
+    }
+
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    var whatsappUrl = '';
+
+    if (isMobile) {
+      whatsappUrl = 'whatsapp://send?phone=573133745646&text=' + encodeURIComponent(mensaje);
+    } else {
+      whatsappUrl = 'https://web.whatsapp.com/send?phone=573133745646&text=' + encodeURIComponent(mensaje);
+    }
+
+    window.open(whatsappUrl);
+  }
+  </script>
+</body>
+</html>
