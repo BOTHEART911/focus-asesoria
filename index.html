@@ -121,9 +121,9 @@
     </div>
 
     <div class="form-group">
-      <label for="whatsapp">N° Telefónico:</label>
-      <input type="tel" id="whatsapp" name="whatsapp" placeholder="Escribe tu número Telefónico" required>
-    </div>
+  <label for="whatsapp">N° Telefónico:</label>
+  <input type="tel" id="whatsapp" name="whatsapp" placeholder="Escribe tu número Telefónico" maxlength="10" required oninput="validarMaximo(this)">
+   </div>
 
     <div class="form-group">
       <label for="horaContacto">Te contactamos:</label>
@@ -229,6 +229,13 @@
 
     window.open(whatsappUrl);
   }
+
+    // Aquí colocas la función validarMaximo
+    function validarMaximo(input) {
+      if (input.value.length > 10) {
+        input.value = input.value.slice(0, 10); // Limita a 10 caracteres
+      }
+    }
   </script>
 </body>
 </html>
