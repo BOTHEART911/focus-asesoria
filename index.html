@@ -163,7 +163,7 @@
     const videoId = obtenerIdVideo(url);
     if (videoId) {
       const iframe = document.getElementById('videoPreview');
-      iframe.src = https://www.youtube.com/embed/${videoId};
+      iframe.src = `https://www.youtube.com/embed/${videoId}`;
     }
   }
 
@@ -202,7 +202,7 @@
     const horaNumerica = parseInt(hora);
     const periodo = horaNumerica >= 12 ? 'PM' : 'AM';
     const hora12 = horaNumerica % 12 || 12;
-    return ${hora12}:${minutos} ${periodo};
+    return `${hora12}:${minutos} ${periodo}`;
   }
 
   function enviarDatos() {
