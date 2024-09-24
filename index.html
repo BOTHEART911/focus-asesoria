@@ -115,29 +115,27 @@
     <p>Estamos para orientarte en el proceso</p>
 
     <!-- Inputs del usuario -->
-    <form id="contactForm">
-      <div class="form-group">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre" required>
-      </div>
+    <div class="form-group">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre" required>
+    </div>
 
-      <div class="form-group">
-        <label for="whatsapp">N° Telefónico:</label>
-        <input type="tel" id="whatsapp" name="whatsapp" placeholder="Escribe tu número Telefónico" maxlength="10" required oninput="validarMaximo(this)">
-      </div>
+    <div class="form-group">
+  <label for="whatsapp">N° Telefónico:</label>
+  <input type="tel" id="whatsapp" name="whatsapp" placeholder="Escribe tu número Telefónico" maxlength="10" required oninput="validarMaximo(this)">
+   </div>
 
-      <div class="form-group">
-        <label for="horaContacto">Te contactamos:</label>
-        <input type="time" id="horaContacto" name="horaContacto" required>
-        <small>Opcionalmente, selecciona la hora en la que podemos llamarte</small>
-      </div>
+    <div class="form-group">
+      <label for="horaContacto">Te contactamos:</label>
+      <input type="time" id="horaContacto" name="horaContacto" required> <!-- Aquí se añade el atributo 'required' -->
+      <small>Opcionalmente, selecciona la hora en la que podemos llamarte</small>
+    </div>
 
-      <div class="form-group">
-        <input type="submit" value="Enviar Respuesta">
-      </div>
+    <div class="form-group">
+      <input type="submit" value="Enviar Respuesta" onclick="validarFormulario()">
+    </div>
 
-      <div class="error-message"></div>
-    </form>
+    <div class="error-message"></div>
 
     <div class="copyright">
       <p>Copyright © <a href="https://wa.me/573103230712" target="_blank">Oscar Polania</a></p>
@@ -145,31 +143,92 @@
   </div>
 
   <script>
-    // Función para obtener el ID del video ya sea en formato estándar o short
-    function obtenerIdVideo(url) {
-      let videoId = null;
-      if (url.includes('youtu.be')) {
-        videoId = url.split('/').pop().split('?')[0];
-      } else if (url.includes('youtube.com/shorts')) {
-        videoId = url.split('/').pop().split('?')[0];
-      } else if (url.includes('youtube.com/watch')) {
-        const urlParams = new URLSearchParams(url.split('?')[1]);
-        videoId = urlParams.get('v');
-      }
-      return videoId;
+  // Función para obtener el ID del video ya sea en formato estándar o short
+  function obtenerIdVideo(url) {
+    let videoId = null;
+    if (url.includes('youtu.be')) {
+      videoId = url.split('/').pop().split('?')[0];
+    } else if (url.includes('youtube.com/shorts')) {
+      videoId = url.split('/').pop().split('?')[0];
+    } else if (url.includes('youtube.com/watch')) {
+      const urlParams = new URLSearchParams(url.split('?')[1]);
+      videoId = urlParams.get('v');
+    }
+    return videoId;
+  }
+
+  // Previsualizar video basado en URL
+  function previsualizarVideo() {
+    const url = "https://youtu.be/lmDfmilZ4Xo?si=bw78mXqkivgHQpRx"; // Cambia la URL si lo deseas
+    const videoId = obtenerIdVideo(url);
+    if (videoId) {
+      const iframe = document.getElementById('videoPreview');
+      iframe.src = https://www.youtube.com/embed/${videoId};
+    }
+  }
+
+  previsualizarVideo();
+
+  function validarFormulario() {
+    var nombre = document.getElementById('nombre').value;
+    var whatsapp = document.getElementById('whatsapp').value;
+    var horaContacto = document.getElementById('horaContacto').value.trim();
+
+    var errores = [];
+
+    if (!nombre) {
+      errores.push("Nombre es obligatorio");
+    }
+    if (!whatsapp) {
+      errores.push("N° Telefónico es obligatorio");
+    } else if (isNaN(whatsapp) || whatsapp.length !== 10) {
+      errores.push("N° Telefónico debe tener 10 dígitos numéricos");
     }
 
-    // Previsualizar video basado en URL
-    function previsualizarVideo() {
-      const url = "https://youtu.be/lmDfmilZ4Xo?si=bw78mXqkivgHQpRx"; // Cambia la URL si lo deseas
-      const videoId = obtenerIdVideo(url);
-      if (videoId) {
-        const iframe = document.getElementById('videoPreview');
-        iframe.src = `https://www.youtube.com/embed/${videoId}`;
-      }
+    if (!horaContacto) {
+      errores.push("La hora es obligatorio");
     }
 
-    previsualizarVideo();
+    if (errores.length > 0) {
+      var mensajeError = errores.join("<br>");
+      document.querySelector('.error-message').innerHTML = mensajeError;
+    } else {
+      enviarDatos();
+    }
+  }
+
+  function convertirHora12Horas(hora24) {
+    const [hora, minutos] = hora24.split(':');
+    const horaNumerica = parseInt(hora);
+    const periodo = horaNumerica >= 12 ? 'PM' : 'AM';
+    const hora12 = horaNumerica % 12 || 12;
+    return ${hora12}:${minutos} ${periodo};
+  }
+
+  function enviarDatos() {
+    var nombre = document.getElementById('nombre').value;
+    var whatsapp = document.getElementById('whatsapp').value;
+    var horaContacto = document.getElementById('horaContacto').value;
+
+    var mensaje = "*SOLICITUD DE ASESORÍA*\n\n";
+    mensaje += "*Nombre:* " + nombre + "\n";
+    mensaje += "*N° Telefónico:* " + whatsapp + "\n";
+    if (horaContacto) {
+      var horaContacto12 = convertirHora12Horas(horaContacto);
+      mensaje += "*Te Contactamos:* " + horaContacto12 + "\n";
+    }
+
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    var whatsappUrl = '';
+
+    if (isMobile) {
+      whatsappUrl = 'whatsapp://send?phone=573133745646&text=' + encodeURIComponent(mensaje);
+    } else {
+      whatsappUrl = 'https://web.whatsapp.com/send?phone=573133745646&text=' + encodeURIComponent(mensaje);
+    }
+
+    window.open(whatsappUrl);
+  }
 
     // Aquí colocas la función validarMaximo
     function validarMaximo(input) {
