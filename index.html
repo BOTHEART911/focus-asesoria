@@ -254,6 +254,7 @@
       }).then((result) => {
         if (result.isConfirmed) {
           enviarDatos(mensaje);
+          document.getElementById('formulario').reset(); // Resetea el formulario
         }
       });
     }
