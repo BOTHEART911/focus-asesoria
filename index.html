@@ -100,6 +100,18 @@
     .text-color {
       color: #fff; /* Cambia el color aquí */
     }
+
+    /* Estilos personalizados para SweetAlert2 */
+    .swal2-popup {
+      border: 2px solid #00f; /* Color del borde */
+      box-shadow: 0 0 10px #00f; /* Sombra */
+    }
+    .swal2-title {
+      color: #00f; /* Color del texto del título */
+    }
+    .swal2-content {
+      color: #fff; /* Color del texto del contenido */
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -194,7 +206,12 @@
         Swal.fire({
           icon: 'error',
           title: 'Errores en el formulario',
-          html: errores.join("<br>")
+          html: errores.join("<br>"),
+          customClass: {
+            popup: 'swal2-popup',
+            title: 'swal2-title',
+            content: 'swal2-content'
+          }
         });
       } else {
         mostrarResumen();
@@ -227,7 +244,12 @@
         html: mensaje.replace(/\n/g, '<br>'),
         showCancelButton: true,
         confirmButtonText: 'Enviar',
-        cancelButtonText: 'Cancelar'
+        cancelButtonText: 'Cancelar',
+        customClass: {
+          popup: 'swal2-popup',
+          title: 'swal2-title',
+          content: 'swal2-content'
+        }
       }).then((result) => {
         if (result.isConfirmed) {
           enviarDatos(mensaje);
